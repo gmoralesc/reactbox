@@ -11,12 +11,47 @@ const Item = ({ title, subtitle }) => {
   );
 };
 
-const element = (
-  <>
-    <Item title="Smells Like Teen Spirit" subtitle={<strong>Nirvana</strong>} />
-    <br />
-    <Item title="Nookie" subtitle="Limp Bizkit" />
-  </>
-);
+const state = {
+  data: [
+    {
+      song: "Smells Like Teen Spirit",
+      artist: "Nirvana"
+    },
+    {
+      song: "Blind",
+      artist: "KoRn"
+    },
+    {
+      song: "Nookie",
+      artist: "Limp Bizkit"
+    }
+  ],
+  index: 0
+};
 
-ReactDOM.render(element, root);
+function setState(nextState) {
+  Object.assign(state, nextState);
+  render();
+}
+
+function handleEvent(event) {
+  setState({
+    index: Math.floor(Math.random() * state.data.length)
+  });
+}
+
+function render() {
+  const { data, index } = state;
+
+  const element = (
+    <>
+      <Item title={data[index].song} subtitle={data[index].artist} />
+      <br />
+      <button onClick={handleEvent}>Shuffle</button>
+    </>
+  );
+
+  ReactDOM.render(element, root);
+}
+
+render();
