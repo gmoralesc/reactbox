@@ -32,6 +32,23 @@ class App extends React.Component {
     index: 0
   };
 
+  shuffle = () => {
+    const { data } = this.state;
+
+    this.setState({
+      index: Math.floor(Math.random() * data.length)
+    });
+  };
+
+  next = () => {
+    const { data } = this.state;
+    this.setState((prevState) => {
+      return {
+        index: (prevState.index + 1) % data.length
+      };
+    });
+  };
+
   render() {
     const { data, index } = this.state;
 
@@ -39,15 +56,8 @@ class App extends React.Component {
       <>
         <Item title={data[index].song} subtitle={data[index].artist} />
         <br />
-        <button
-          onClick={() => {
-            this.setState({
-              index: Math.floor(Math.random() * data.length)
-            });
-          }}
-        >
-          Shuffle
-        </button>
+        <button onClick={this.shuffle}>Shuffle</button>
+        <button onClick={this.next}>Next</button>
       </>
     );
   }
