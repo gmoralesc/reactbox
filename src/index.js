@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 const root = document.getElementById("app");
 
+// Functional component
 const Item = ({ title, subtitle }) => {
   return (
     <span>
@@ -11,47 +12,45 @@ const Item = ({ title, subtitle }) => {
   );
 };
 
-const state = {
-  data: [
-    {
-      song: "Smells Like Teen Spirit",
-      artist: "Nirvana"
-    },
-    {
-      song: "Blind",
-      artist: "KoRn"
-    },
-    {
-      song: "Nookie",
-      artist: "Limp Bizkit"
-    }
-  ],
-  index: 0
-};
+// Container component
+class App extends React.Component {
+  state = {
+    data: [
+      {
+        song: "Smells Like Teen Spirit",
+        artist: "Nirvana"
+      },
+      {
+        song: "Blind",
+        artist: "KoRn"
+      },
+      {
+        song: "Nookie",
+        artist: "Limp Bizkit"
+      }
+    ],
+    index: 0
+  };
 
-function setState(nextState) {
-  Object.assign(state, nextState);
-  render();
+  render() {
+    const { data, index } = this.state;
+
+    return (
+      <>
+        <Item title={data[index].song} subtitle={data[index].artist} />
+        <br />
+        <button
+          onClick={() => {
+            this.setState({
+              index: Math.floor(Math.random() * data.length)
+            });
+          }}
+        >
+          Shuffle
+        </button>
+      </>
+    );
+  }
 }
 
-function handleEvent(event) {
-  setState({
-    index: Math.floor(Math.random() * state.data.length)
-  });
-}
-
-function render() {
-  const { data, index } = state;
-
-  const element = (
-    <>
-      <Item title={data[index].song} subtitle={data[index].artist} />
-      <br />
-      <button onClick={handleEvent}>Shuffle</button>
-    </>
-  );
-
-  ReactDOM.render(element, root);
-}
-
-render();
+ReactDOM.render(<App />, root);
