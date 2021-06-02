@@ -58,6 +58,12 @@ class App extends React.Component {
     });
   };
 
+  play = ({ nextIndex }) => {
+    this.setState({
+      index: nextIndex
+    });
+  };
+
   render() {
     const { data, index } = this.state;
 
@@ -72,6 +78,20 @@ class App extends React.Component {
         <button onClick={this.prev}>Previous</button>
         <button onClick={this.shuffle}>Shuffle</button>
         <button onClick={this.next}>Next</button>
+        <ul>
+          {data.map((element, i) => (
+            <li key={i}>
+              <button
+                onClick={() => {
+                  this.play({ nextIndex: i });
+                }}
+              >
+                Play
+              </button>{" "}
+              <Item title={element.song} subtitle={element.artist} />
+            </li>
+          ))}
+        </ul>
       </>
     );
   }
