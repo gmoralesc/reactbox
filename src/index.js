@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import "./styles.css";
+
 const root = document.getElementById("app");
 
 // Functional component
@@ -80,14 +82,13 @@ class App extends React.Component {
         <button onClick={this.next}>Next</button>
         <ul>
           {data.map((element, i) => (
-            <li key={i}>
-              <button
-                onClick={() => {
-                  this.play({ nextIndex: i });
-                }}
-              >
-                Play
-              </button>{" "}
+            <li
+              key={i}
+              onClick={() => {
+                this.play({ nextIndex: i });
+              }}
+              className={index === i ? "selected" : ""}
+            >
               <Item title={element.song} subtitle={element.artist} />
             </li>
           ))}
