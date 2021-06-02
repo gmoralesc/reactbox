@@ -29,7 +29,7 @@ class App extends React.Component {
         artist: "Limp Bizkit"
       }
     ],
-    index: 0
+    index: -1
   };
 
   shuffle = () => {
@@ -49,13 +49,27 @@ class App extends React.Component {
     });
   };
 
+  prev = () => {
+    const { data } = this.state;
+    this.setState((prevState) => {
+      return {
+        index: prevState.index - 1 < 0 ? data.length - 1 : prevState.index - 1
+      };
+    });
+  };
+
   render() {
     const { data, index } = this.state;
 
     return (
       <>
-        <Item title={data[index].song} subtitle={data[index].artist} />
+        {index === -1 ? (
+          <Item title="Untitled" subtitle="Unknown" />
+        ) : (
+          <Item title={data[index].song} subtitle={data[index].artist} />
+        )}
         <br />
+        <button onClick={this.prev}>Previous</button>
         <button onClick={this.shuffle}>Shuffle</button>
         <button onClick={this.next}>Next</button>
       </>
