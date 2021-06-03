@@ -14,6 +14,28 @@ const Item = ({ title, subtitle }) => {
   );
 };
 
+const Player = ({ data = [], index = -1 }) => {
+  return (
+    <div>
+      {index === -1 ? (
+        <Item title="Untitled" subtitle="Unknown" />
+      ) : (
+        <Item title={data[index].song} subtitle={data[index].artist} />
+      )}
+    </div>
+  );
+};
+
+const Controls = ({ prev, shuffle, next }) => {
+  return (
+    <div>
+      <button onClick={prev}>Previous</button>
+      <button onClick={shuffle}>Shuffle</button>
+      <button onClick={next}>Next</button>
+    </div>
+  );
+};
+
 // Container component
 class App extends React.Component {
   state = {
@@ -71,15 +93,8 @@ class App extends React.Component {
 
     return (
       <>
-        {index === -1 ? (
-          <Item title="Untitled" subtitle="Unknown" />
-        ) : (
-          <Item title={data[index].song} subtitle={data[index].artist} />
-        )}
-        <br />
-        <button onClick={this.prev}>Previous</button>
-        <button onClick={this.shuffle}>Shuffle</button>
-        <button onClick={this.next}>Next</button>
+        <Player data={data} index={index} />
+        <Controls prev={this.prev} shuffle={this.shuflle} next={this.next} />
         <ul>
           {data.map((element, i) => (
             <li
