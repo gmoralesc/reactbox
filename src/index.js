@@ -36,6 +36,27 @@ const Controls = ({ prev, shuffle, next }) => {
   );
 };
 
+const List = (props) => {
+  const { onSelect, selected = -1, list = [] } = props;
+  return (
+    <div>
+      <ul>
+        {list.map((element, i) => (
+          <li
+            key={i}
+            onClick={() => {
+              onSelect({ nextIndex: i });
+            }}
+            className={selected === i ? "selected" : ""}
+          >
+            <Item title={element.song} subtitle={element.artist} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 // Container component
 class App extends React.Component {
   state = {
@@ -88,6 +109,21 @@ class App extends React.Component {
     });
   };
 
+  remove = () => {
+    const { index } = this.state;
+    if (index !== -1) {
+      this.setState(({ data }) => {
+        const filteredData = data.filter((item, i) => {
+          return i !== index;
+        });
+        return {
+          data: filteredData,
+          index: -1
+        };
+      });
+    }
+  };
+
   render() {
     const { data, index } = this.state;
 
@@ -95,19 +131,8 @@ class App extends React.Component {
       <>
         <Player data={data} index={index} />
         <Controls prev={this.prev} shuffle={this.shuflle} next={this.next} />
-        <ul>
-          {data.map((element, i) => (
-            <li
-              key={i}
-              onClick={() => {
-                this.play({ nextIndex: i });
-              }}
-              className={index === i ? "selected" : ""}
-            >
-              <Item title={element.song} subtitle={element.artist} />
-            </li>
-          ))}
-        </ul>
+        <List list={data} selected={index} onSelect={this.play} />
+        <button onClick={this.remove}>Remove</button>
       </>
     );
   }
