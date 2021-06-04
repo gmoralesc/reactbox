@@ -81,7 +81,8 @@ class App extends React.Component {
       }
     ],
     index: -1,
-    showForm: false
+    showForm: false,
+    error: ""
   };
 
   shuffle = () => {
@@ -132,21 +133,33 @@ class App extends React.Component {
   };
 
   toggleForm = () => {
-    this.setState(({ showForm }) => ({ showForm: !showForm }));
+    this.setState(({ showForm }) => ({ 
+      showForm: !showForm,
+      error: ""
+    }));
   };
 
   add = (event) => {
     event.preventDefault();
     // const { song, artist } = event.target.elements;
     const { data } = this.state;
+    const song = this.song.current.value;
+    const artist = this.song.current.value;
+
+    if (!song && !artist) {
+      this.setState({
+        error: "Song and Artist are required"
+      });
+      return;
+    }
 
     this.setState(
       {
         data: [
           ...data,
           {
-            song: this.song.current.value,
-            artist: this.artist.current.value
+            song,
+            artist
           }
         ]
       },
@@ -157,7 +170,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { data, index, showForm } = this.state;
+    const { data, index, showForm, error } = this.state;
 
     return (
       <>
@@ -177,6 +190,7 @@ class App extends React.Component {
             <button onClick={this.remove}>Remove</button>
           </>
         )}
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </>
     );
   }
