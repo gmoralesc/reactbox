@@ -129,6 +129,27 @@ class App extends React.Component {
     this.setState(({ showForm }) => ({ showForm: !showForm }));
   };
 
+  add = (event) => {
+    event.preventDefault();
+    const { song, artist } = event.target.elements;
+    const { data } = this.state;
+
+    this.setState(
+      {
+        data: [
+          ...data,
+          {
+            song: song.value,
+            artist: artist.value
+          }
+        ]
+      },
+      () => {
+        this.toggleForm();
+      }
+    );
+  };
+
   render() {
     const { data, index, showForm } = this.state;
 
@@ -140,10 +161,10 @@ class App extends React.Component {
         <button onClick={this.toggleForm}>Add</button>
         <button onClick={this.remove}>Remove</button>
         {showForm && (
-          <form>
-            <input type="text" name="song" id="song" />
-            <input type="text" name="artist" id="artist" />
-            <button>Save</button>
+          <form onSubmit={this.add}>
+            <input type="text" name="song" />
+            <input type="text" name="artist" />
+            <button type="submit">Save</button>
             <button onClick={this.toggleForm}>Cancel</button>
           </form>
         )}
