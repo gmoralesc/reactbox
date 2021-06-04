@@ -59,6 +59,12 @@ const List = (props) => {
 
 // Container component
 class App extends React.Component {
+  constructor(args) {
+    super(args);
+    this.song = null;
+    this.artist = null;
+  }
+
   state = {
     data: [
       {
@@ -75,8 +81,7 @@ class App extends React.Component {
       }
     ],
     index: -1,
-    showForm: false,
-    song: ""
+    showForm: false
   };
 
   shuffle = () => {
@@ -132,7 +137,7 @@ class App extends React.Component {
 
   add = (event) => {
     event.preventDefault();
-    const { song, artist } = event.target.elements;
+    // const { song, artist } = event.target.elements;
     const { data } = this.state;
 
     this.setState(
@@ -140,8 +145,8 @@ class App extends React.Component {
         data: [
           ...data,
           {
-            song: song.value,
-            artist: artist.value
+            song: this.song.value,
+            artist: this.artist.value
           }
         ]
       },
@@ -151,14 +156,8 @@ class App extends React.Component {
     );
   };
 
-  onChange = (event) => {
-    this.setState({
-      song: event.target.value
-    });
-  };
-
   render() {
-    const { data, index, showForm, song } = this.state;
+    const { data, index, showForm } = this.state;
 
     return (
       <>
@@ -169,13 +168,12 @@ class App extends React.Component {
         <button onClick={this.remove}>Remove</button>
         {showForm && (
           <form onSubmit={this.add}>
+            <input type="text" name="song" ref={(node) => (this.song = node)} />
             <input
               type="text"
-              name="song"
-              onChange={this.onChange}
-              value={song}
+              name="artist"
+              ref={(node) => (this.artist = node)}
             />
-            <input type="text" name="artist" />
             <button type="submit">Save</button>
             <button onClick={this.toggleForm}>Cancel</button>
           </form>
