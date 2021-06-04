@@ -74,7 +74,8 @@ class App extends React.Component {
         artist: "Limp Bizkit"
       }
     ],
-    index: -1
+    index: -1,
+    showForm: false
   };
 
   shuffle = () => {
@@ -124,15 +125,28 @@ class App extends React.Component {
     }
   };
 
+  toggleForm = () => {
+    this.setState(({ showForm }) => ({ showForm: !showForm }));
+  };
+
   render() {
-    const { data, index } = this.state;
+    const { data, index, showForm } = this.state;
 
     return (
       <>
         <Player data={data} index={index} />
-        <Controls prev={this.prev} shuffle={this.shuflle} next={this.next} />
+        <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         <List list={data} selected={index} onSelect={this.play} />
+        <button onClick={this.toggleForm}>Add</button>
         <button onClick={this.remove}>Remove</button>
+        {showForm && (
+          <form>
+            <input type="text" name="song" id="song" />
+            <input type="text" name="artist" id="artist" />
+            <button>Save</button>
+            <button onClick={this.toggleForm}>Cancel</button>
+          </form>
+        )}
       </>
     );
   }
