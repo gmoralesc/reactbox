@@ -174,7 +174,6 @@ class App extends React.Component {
               name="song"
               onChange={this.onChange}
               value={song}
-              w
             />
             <input type="text" name="artist" />
             <button type="submit">Save</button>
