@@ -61,8 +61,8 @@ const List = (props) => {
 class App extends React.Component {
   constructor(args) {
     super(args);
-    this.song = null;
-    this.artist = null;
+    this.song = React.createRef();
+    this.artist = React.createRef();
   }
 
   state = {
@@ -145,8 +145,8 @@ class App extends React.Component {
         data: [
           ...data,
           {
-            song: this.song.value,
-            artist: this.artist.value
+            song: this.song.current.value,
+            artist: this.artist.current.value
           }
         ]
       },
@@ -164,19 +164,18 @@ class App extends React.Component {
         <Player data={data} index={index} />
         <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         <List list={data} selected={index} onSelect={this.play} />
-        <button onClick={this.toggleForm}>Add</button>
-        <button onClick={this.remove}>Remove</button>
-        {showForm && (
+        {showForm ? (
           <form onSubmit={this.add}>
-            <input type="text" name="song" ref={(node) => (this.song = node)} />
-            <input
-              type="text"
-              name="artist"
-              ref={(node) => (this.artist = node)}
-            />
+            <input type="text" name="song" ref={this.song} />
+            <input type="text" name="artist" ref={this.artist} />
             <button type="submit">Save</button>
             <button onClick={this.toggleForm}>Cancel</button>
           </form>
+        ) : (
+          <>
+            <button onClick={this.toggleForm}>Add</button>
+            <button onClick={this.remove}>Remove</button>
+          </>
         )}
       </>
     );
