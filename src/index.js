@@ -75,7 +75,8 @@ class App extends React.Component {
       }
     ],
     index: -1,
-    showForm: false
+    showForm: false,
+    song: ""
   };
 
   shuffle = () => {
@@ -150,8 +151,14 @@ class App extends React.Component {
     );
   };
 
+  onChange = (event) => {
+    this.setState({
+      song: event.target.value
+    });
+  };
+
   render() {
-    const { data, index, showForm } = this.state;
+    const { data, index, showForm, song } = this.state;
 
     return (
       <>
@@ -162,7 +169,13 @@ class App extends React.Component {
         <button onClick={this.remove}>Remove</button>
         {showForm && (
           <form onSubmit={this.add}>
-            <input type="text" name="song" />
+            <input
+              type="text"
+              name="song"
+              onChange={this.onChange}
+              value={song}
+              w
+            />
             <input type="text" name="artist" />
             <button type="submit">Save</button>
             <button onClick={this.toggleForm}>Cancel</button>
