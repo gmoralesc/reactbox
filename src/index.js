@@ -18,7 +18,7 @@ const Item = ({ title, subtitle }) => {
 
 const Player = ({ data = [], index = -1 }) => {
   return (
-    <div>
+    <div className="current-play b-black g-color">
       {index === -1 ? (
         <Item title="Untitled" subtitle="Unknown" />
       ) : (
@@ -31,10 +31,17 @@ const Player = ({ data = [], index = -1 }) => {
 const ControlsComponent = ({ prev, shuffle, next }) => {
   console.log("render Controls");
   return (
-    <div>
-      <button onClick={prev}>Previous</button>
+    <div className="control">
+      <button onClick={prev}>
+        <i class="fas fa-backward"></i>
+      </button>
       <button onClick={shuffle}>Shuffle</button>
-      <button onClick={next}>Next</button>
+      <button onClick={prev}>
+        <i class="fas fa-play"></i>
+      </button>
+      <button onClick={next}>
+        <i class="fa fa-forward"></i>
+      </button>
     </div>
   );
 };
@@ -48,7 +55,7 @@ const Controls = React.memo(ControlsComponent, areEqual);
 const List = (props) => {
   const { onSelect, selected = -1, list = [] } = props;
   return (
-    <div>
+    <div className="list b-black">
       <ul>
         {list.map((element, i) => (
           <li
@@ -56,7 +63,7 @@ const List = (props) => {
             onClick={() => {
               onSelect({ nextIndex: i });
             }}
-            className={selected === i ? "selected" : ""}
+            className={selected === i ? "playing" : ""}
           >
             <Item title={element.song} subtitle={element.artist} />
           </li>
@@ -175,10 +182,30 @@ class App extends React.Component {
 
     return (
       <>
-        <Player data={data} index={index} />
-        <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
-        <List list={data} selected={index} onSelect={this.play} />
-        <FormContainer add={this.add} remove={this.remove} />
+        <div className="main-ui player">
+          <header>
+            <div className="line" />
+            <h1>ReactBox</h1>
+          </header>
+          <div class="inner">
+            <Player data={data} index={index} />
+            <Controls
+              prev={this.prev}
+              shuffle={this.shuffle}
+              next={this.next}
+            />
+          </div>
+        </div>
+        <div className="main-ui list">
+          <header>
+            <div className="line" />
+            <h1>ReactBox</h1>
+          </header>
+          <div class="inner">
+            <List list={data} selected={index} onSelect={this.play} />
+            <FormContainer add={this.add} remove={this.remove} />
+          </div>
+        </div>
       </>
     );
   }
