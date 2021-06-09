@@ -1,5 +1,38 @@
 import React from "react";
 
+class Form extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log("constructor Form");
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount Form");
+  }
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate Form");
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount Form");
+    // NO Ajax
+    // No setState
+  }
+
+  render() {
+    console.log("render Form");
+    return (
+      <form onSubmit={this.props.handleSave}>
+        <input type="text" name="song" />
+        <input type="text" name="artist" />
+        <button type="submit">Save</button>
+        <button onClick={this.props.toggleForm}>Cancel</button>
+      </form>
+    );
+  }
+}
+
 export class FormContainer extends React.Component {
   state = {
     showForm: false,
@@ -37,12 +70,7 @@ export class FormContainer extends React.Component {
     return (
       <>
         {showForm ? (
-          <form onSubmit={this.handleSave}>
-            <input type="text" name="song" />
-            <input type="text" name="artist" />
-            <button type="submit">Save</button>
-            <button onClick={this.toggleForm}>Cancel</button>
-          </form>
+          <Form toggleForm={this.toggleForm} handleSave={this.handleSave} />
         ) : (
           <>
             <button onClick={this.toggleForm}>Add</button>

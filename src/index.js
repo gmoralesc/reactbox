@@ -61,23 +61,58 @@ const List = (props) => {
 
 // Container component
 class App extends React.Component {
-  state = {
-    data: [
-      {
-        song: "Smells Like Teen Spirit",
-        artist: "Nirvana"
-      },
-      {
-        song: "Blind",
-        artist: "KoRn"
-      },
-      {
-        song: "Nookie",
-        artist: "Limp Bizkit"
-      }
-    ],
-    index: -1
-  };
+  constructor(props) {
+    super(props);
+
+    const index = props.index >= 0 ? props.index : -1;
+
+    this.state = {
+      data: [],
+      index
+    };
+    console.log("constructor App");
+    // 1. Acceder a los props
+    // 2. Declarar variables
+    // 3. Inicializar el estado con o sin props
+
+    // NO utilizar setState
+    // No Ajax
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount App");
+    setTimeout(() => {
+      this.setState({
+        data: [
+          {
+            song: "Smells Like Teen Spirit",
+            artist: "Nirvana"
+          },
+          {
+            song: "Blind",
+            artist: "KoRn"
+          },
+          {
+            song: "Nookie",
+            artist: "Limp Bizkit"
+          }
+        ]
+      });
+    }, 1000);
+    // setState
+    // Ajax
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log("componentDidUpdate App");
+    console.log({
+      prevProps,
+      prevState,
+      snapshot
+    });
+    // setState
+    // Ajax
+  }
 
   shuffle = () => {
     const { data } = this.state;
@@ -141,6 +176,9 @@ class App extends React.Component {
 
   render() {
     const { data, index } = this.state;
+    console.log("render App");
+    // NO setState
+    // No Ajax
 
     return (
       <>
@@ -153,4 +191,4 @@ class App extends React.Component {
   }
 }
 
-ReactDOM.render(<App />, root);
+ReactDOM.render(<App index={-1} />, root);
