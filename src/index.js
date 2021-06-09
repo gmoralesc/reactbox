@@ -73,6 +73,20 @@ const List = (props) => {
   );
 };
 
+const Panel = ({ children, title, wrapperClass }) => {
+  return (
+    <div className={`main-ui ${wrapperClass}`}>
+      <header>
+        <div className="line" />
+        <h1>{title}</h1>
+      </header>
+      <div className="inner">
+        { children }
+      </div>
+    </div>
+  )
+}
+
 // Container component
 class App extends React.Component {
   constructor(props) {
@@ -182,30 +196,18 @@ class App extends React.Component {
 
     return (
       <>
-        <div className="main-ui player">
-          <header>
-            <div className="line" />
-            <h1>ReactBox</h1>
-          </header>
-          <div class="inner">
-            <Player data={data} index={index} />
-            <Controls
-              prev={this.prev}
-              shuffle={this.shuffle}
-              next={this.next}
-            />
-          </div>
-        </div>
-        <div className="main-ui list">
-          <header>
-            <div className="line" />
-            <h1>ReactBox</h1>
-          </header>
-          <div class="inner">
-            <List list={data} selected={index} onSelect={this.play} />
-            <FormContainer add={this.add} remove={this.remove} />
-          </div>
-        </div>
+        <Panel title="ReactBox" wrapperClass="player">
+          <Player data={data} index={index} />
+          <Controls
+            prev={this.prev}
+            shuffle={this.shuffle}
+            next={this.next}
+          />
+        </Panel>
+        <Panel title="List" wrapperClass="list">
+          <List list={data} selected={index} onSelect={this.play} />
+          <FormContainer add={this.add} remove={this.remove} />
+        </Panel>
       </>
     );
   }
