@@ -33,7 +33,7 @@ class Form extends React.Component {
   }
 }
 
-export class FormContainer extends React.Component {
+export class FormContainer extends React.PureComponent {
   state = {
     showForm: false,
     error: ""
@@ -67,6 +67,7 @@ export class FormContainer extends React.Component {
 
   render() {
     const { showForm, error } = this.state;
+    console.log("render FormContainer");
     return (
       <>
         {showForm ? (

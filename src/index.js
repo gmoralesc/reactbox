@@ -28,7 +28,8 @@ const Player = ({ data = [], index = -1 }) => {
   );
 };
 
-const Controls = ({ prev, shuffle, next }) => {
+const ControlsComponent = ({ prev, shuffle, next }) => {
+  console.log("render Controls");
   return (
     <div>
       <button onClick={prev}>Previous</button>
@@ -37,6 +38,12 @@ const Controls = ({ prev, shuffle, next }) => {
     </div>
   );
 };
+
+const areEqual = (prevProps, nextProps) => {
+  return true;
+};
+
+const Controls = React.memo(ControlsComponent, areEqual);
 
 const List = (props) => {
   const { onSelect, selected = -1, list = [] } = props;
@@ -70,7 +77,6 @@ class App extends React.Component {
       data: [],
       index
     };
-    console.log("constructor App");
     // 1. Acceder a los props
     // 2. Declarar variables
     // 3. Inicializar el estado con o sin props
@@ -80,7 +86,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log("componentDidMount App");
     setTimeout(() => {
       this.setState({
         data: [
@@ -99,17 +104,6 @@ class App extends React.Component {
         ]
       });
     }, 1000);
-    // setState
-    // Ajax
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log("componentDidUpdate App");
-    console.log({
-      prevProps,
-      prevState,
-      snapshot
-    });
     // setState
     // Ajax
   }
@@ -176,7 +170,6 @@ class App extends React.Component {
 
   render() {
     const { data, index } = this.state;
-    console.log("render App");
     // NO setState
     // No Ajax
 
