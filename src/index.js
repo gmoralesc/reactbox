@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import { FormContainer } from "./form";
+
 import "./styles.css";
 
 const root = document.getElementById("app");
@@ -59,12 +61,6 @@ const List = (props) => {
 
 // Container component
 class App extends React.Component {
-  constructor(args) {
-    super(args);
-    this.song = React.createRef();
-    this.artist = React.createRef();
-  }
-
   state = {
     data: [
       {
@@ -80,9 +76,7 @@ class App extends React.Component {
         artist: "Limp Bizkit"
       }
     ],
-    index: -1,
-    showForm: false,
-    error: ""
+    index: -1
   };
 
   shuffle = () => {
@@ -132,65 +126,28 @@ class App extends React.Component {
     }
   };
 
-  toggleForm = () => {
-    this.setState(({ showForm }) => ({ 
-      showForm: !showForm,
-      error: ""
-    }));
-  };
-
-  add = (event) => {
-    event.preventDefault();
-    // const { song, artist } = event.target.elements;
+  add = ({ song, artist }) => {
     const { data } = this.state;
-    const song = this.song.current.value;
-    const artist = this.song.current.value;
-
-    if (!song && !artist) {
-      this.setState({
-        error: "Song and Artist are required"
-      });
-      return;
-    }
-
-    this.setState(
-      {
-        data: [
-          ...data,
-          {
-            song,
-            artist
-          }
-        ]
-      },
-      () => {
-        this.toggleForm();
-      }
-    );
+    this.setState({
+      data: [
+        ...data,
+        {
+          song: song.value,
+          artist: artist.value
+        }
+      ]
+    });
   };
 
   render() {
-    const { data, index, showForm, error } = this.state;
+    const { data, index } = this.state;
 
     return (
       <>
         <Player data={data} index={index} />
         <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         <List list={data} selected={index} onSelect={this.play} />
-        {showForm ? (
-          <form onSubmit={this.add}>
-            <input type="text" name="song" ref={this.song} />
-            <input type="text" name="artist" ref={this.artist} />
-            <button type="submit">Save</button>
-            <button onClick={this.toggleForm}>Cancel</button>
-          </form>
-        ) : (
-          <>
-            <button onClick={this.toggleForm}>Add</button>
-            <button onClick={this.remove}>Remove</button>
-          </>
-        )}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <FormContainer add={this.add} remove={this.remove} />
       </>
     );
   }
