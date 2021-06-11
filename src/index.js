@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { FormContainer } from "./form";
+import { Form } from "./form";
 
 import "./styles.css";
 
@@ -28,29 +28,22 @@ const Player = ({ data = [], index = -1 }) => {
   );
 };
 
-const ControlsComponent = ({ prev, shuffle, next }) => {
-  console.log("render Controls");
+const Controls = ({ prev, shuffle, next }) => {
   return (
     <div className="control">
       <button onClick={prev}>
-        <i class="fas fa-backward"></i>
+        <i className="fas fa-backward"></i>
       </button>
       <button onClick={shuffle}>Shuffle</button>
       <button onClick={prev}>
-        <i class="fas fa-play"></i>
+        <i className="fas fa-play"></i>
       </button>
       <button onClick={next}>
-        <i class="fa fa-forward"></i>
+        <i className="fa fa-forward"></i>
       </button>
     </div>
   );
 };
-
-const areEqual = (prevProps, nextProps) => {
-  return true;
-};
-
-const Controls = React.memo(ControlsComponent, areEqual);
 
 const List = (props) => {
   const { onSelect, selected = -1, list = [] } = props;
@@ -80,12 +73,10 @@ const Panel = ({ children, title, wrapperClass }) => {
         <div className="line" />
         <h1>{title}</h1>
       </header>
-      <div className="inner">
-        { children }
-      </div>
+      <div className="inner">{children}</div>
     </div>
-  )
-}
+  );
+};
 
 // Container component
 class App extends React.Component {
@@ -182,8 +173,8 @@ class App extends React.Component {
       data: [
         ...data,
         {
-          song: song.value,
-          artist: artist.value
+          song,
+          artist
         }
       ]
     });
@@ -198,15 +189,11 @@ class App extends React.Component {
       <>
         <Panel title="ReactBox" wrapperClass="player">
           <Player data={data} index={index} />
-          <Controls
-            prev={this.prev}
-            shuffle={this.shuffle}
-            next={this.next}
-          />
+          <Controls prev={this.prev} shuffle={this.shuffle} next={this.next} />
         </Panel>
         <Panel title="List" wrapperClass="list">
           <List list={data} selected={index} onSelect={this.play} />
-          <FormContainer add={this.add} remove={this.remove} />
+          <Form add={this.add} remove={this.remove} />
         </Panel>
       </>
     );

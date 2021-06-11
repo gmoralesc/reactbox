@@ -1,85 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 
-class Form extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log("constructor Form");
+export const Form = ({ add, remove }) => {
+  const [showForm, setShowForm] = useState(false);
+  const [error, setError] = useState("");
+
+  function toggleForm() {
+    setShowForm((prevShowForm) => !prevShowForm);
+    setError("");
   }
 
-  componentDidMount() {
-    console.log("componentDidMount Form");
-  }
-
-  componentDidUpdate() {
-    console.log("componentDidUpdate Form");
-  }
-
-  componentWillUnmount() {
-    console.log("componentWillUnmount Form");
-    // NO Ajax
-    // No setState
-  }
-
-  render() {
-    console.log("render Form");
-    return (
-      <form onSubmit={this.props.handleSave} className="control">
-        <input type="text" name="song" />
-        <input type="text" name="artist" />
-        <button type="submit">Save</button>
-        <button onClick={this.props.toggleForm}>Cancel</button>
-      </form>
-    );
-  }
-}
-
-export class FormContainer extends React.PureComponent {
-  state = {
-    showForm: false,
-    error: ""
-  };
-
-  toggleForm = () => {
-    this.setState(({ showForm }) => ({
-      showForm: !showForm,
-      error: ""
-    }));
-  };
-
-  handleSave = (event) => {
+  const handleSave = (event) => {
     event.preventDefault();
     const { song, artist } = event.target.elements;
 
-    if (!song && !artist) {
-      this.setState({
-        error: "Song and Artist are required"
-      });
+    if (!song.value && !artist.value) {
+      setError("Song and Artist are required");
       return;
     }
 
-    this.props.add({
-      song,
-      artist
+    add({
+      song: song.value,
+      artist: artist.value
     });
 
-    this.toggleForm();
+    toggleForm();
   };
 
-  render() {
-    const { showForm, error } = this.state;
-    console.log("render FormContainer");
-    return (
-      <>
-        {showForm ? (
-          <Form toggleForm={this.toggleForm} handleSave={this.handleSave} />
-        ) : (
-          <div className="control">
-            <button onClick={this.toggleForm}>Add</button>
-            <button onClick={this.props.remove}>Remove</button>
-          </div>
-        )}
-        {error && <p style={{ color: "red" }}>{error}</p>}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      {showForm ? (
+        <form onSubmit={handleSave} className="control">
+          <input type="text" name="song" />
+          <input type="text" name="artist" />
+          <button type="submit">Save</button>
+          <button onClick={toggleForm}>Cancel</button>
+        </form>
+      ) : (
+        <div className="control">
+          <button onClick={toggleForm}>Add</button>
+          <button onClick={remove}>Remove</button>
+        </div>
+      )}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </>
+  );
+};
