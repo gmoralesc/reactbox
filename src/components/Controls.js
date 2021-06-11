@@ -7,7 +7,7 @@ export const Controls = ({ prev, shuffle, next }) => {
         <i className="fas fa-backward"></i>
       </button>
       <button onClick={shuffle}>Shuffle</button>
-      <button onClick={prev}>
+      <button>
         <i className="fas fa-play"></i>
       </button>
       <button onClick={next}>
