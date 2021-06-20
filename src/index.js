@@ -70,6 +70,7 @@ const ReactBox = ({ defaultIndex = -1 }) => {
         artist
       }
     ]);
+    setIndex(data.length);
   };
 
   return (
